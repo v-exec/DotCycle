@@ -1,0 +1,53 @@
+name: Assignment_01 - DotCycle
+
+tags: assignments
+
+title: #[Assignment_01 - DotCycle]
+
+content:
+_[DotCycle] is a linear, first person narrative game. The player takes control of a nameless being navigating the mental space of archived memories. It explores the various realizations of an AI as it matured and reasoned with the world around it. Rooms are meant to act as metaphorical representations of the AI's mental state, and the navigation between them; the chronological progression of the AI's thoughts.
++
++
+@[Windows download>assignment01/DotCycle_Build_win.zip]
++
+@[Mac download>assignment01/DotCycle_Build_mac.zip]
+
+%[]
+
+&[dotcycle>1]
+
+Its 'gameplay' is linear, mostly focused on the aesthetic appreciation of the environment and atmosphere. I would have liked to give players more choice in regards to how they explore the story, however limited time kept me from expanding on the level design.
+
+&[dotcycle>4]
+
+Throughout the game, the story is told through scripted text appearing as the player progresses through the game. I considered having this text in the environment itself, but the dither shader made it very difficult to read, so I opted for keeping it on the screen.
+
+&[dotcycle>7]
+
+Visually, the entire game is rendered with achromatic low-resolution dithering, strongly evoking a sense of navigating a digital world. The achromacy was very forgiving when it came to level design, as it makes playing with negative space very easy, and almost naturally occurring. The dithering, combined with the low resolution, made for a very visually abstract environment, further helping convey a sense of otherworldiness. Moving the camera away from the viewport (essentially creating large black borders around the camera image) was surprisingly effective in creating a sense of looking-through the eyes of someone else. I wanted to suggest that the player is examining the AI's memories from the outside in some way.
++
++
+Overall, I was very happy to find such a cohesive union between the technical effects and the visual symbolism in each area.
+
+&[dotcycle>6]
+
+At the moment, I'm quite happy with how it turned out. I would say it successfully provides an environment for the player to immerse themselves in a story that's told in part through quote on quote 'poetry', as well as an environment that acts as a heavy support to the narrative.
++
++
+I do wish, however, that I could have made the game less linear. A bit more player choice, more open areas, I feel like that could have made the experience a bit more mechanically compelling. Additionally, I find the biggest issue to be that of pacing. Due to the short length of the game, it's hard to fit in 3 distinct ideas/chapters without the transition between them and the build-up to each one being somewhat over-compressed.
+
+%[]
+
+-[
+_[DotCycle] was made in Unity.
+++
+Audio was produced in Ableton.
+++
+Dither shader was written in HLSL.
+++
+Models were built in Blender.
+]
+
+%[]
+
+@[Project log data>http://log.v-os.ca/DotCycle]
