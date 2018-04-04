@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Narrator : MonoBehaviour {
 
 	public int index = 0;
 
 	private Text textDisplay;
+	private Text controlsText;
+	private Text menuText;
+	private GameObject menuPanel;
 
 	private bool getTime = true;
 	private bool nextText = false;
+	private bool escaped = false;
 	private float time;
 
 	private float endNum;
@@ -29,7 +34,13 @@ public class Narrator : MonoBehaviour {
 	private GameObject stars;
 
 	void Start () {
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
+
 		textDisplay = GameObject.Find("Text").GetComponent<Text>();
+		controlsText = GameObject.Find("ControlsText").GetComponent<Text>();
+		menuText = GameObject.Find("MenuText").GetComponent<Text>();
+		menuPanel = GameObject.Find("MenuPanel");
 		player = GameObject.Find("Player");
 		cam = GameObject.Find("FilterCam");
 
@@ -55,18 +66,55 @@ public class Narrator : MonoBehaviour {
 
 		endNum = Random.Range(0.3f, 0.4f);
 	}
+
+	void Update() {
+		if (Input.GetKeyDown("p")) SceneManager.LoadScene("DoT");
+
+		if (Input.GetKeyDown("escape")) {
+			if (index != 47) {
+				escaped = true;
+				menuText.text = "Hello Operator. The archive has not been fully explored yet.\n\nAre you sure you want to stop the emulation?\n\n[y]es / [n]o";
+			} else {
+				escaped = true;
+				menuPanel.SetActive(true);
+				StartCoroutine(StopGame(true));
+			}
+		}
+
+		if (escaped) {
+			menuPanel.SetActive(true);
+			Time.timeScale = 0;
+			if (Input.GetKeyDown("n")) escaped = false;
+			if (Input.GetKeyDown("y")) StartCoroutine(StopGame(false));
+		} else {
+			Time.timeScale = 1;
+			menuText.text = "";
+			menuPanel.SetActive(false);
+		}
+	}
 	
 	void FixedUpdate () {
+		Cursor.lockState = CursorLockMode.Locked;
+		
 		switch(index) {
 
+			case -4:
+			controlsText.enabled = true;
+			DisplayText("", 4f, 0f);
+			break;
+
 			case -1:
+			textDisplay.alignment = TextAnchor.UpperLeft;
 			textDisplay.text = "";
+			controlsText.enabled = false;
 			break;
 
 			case 0:
 			moveScript.enabled = false;
 			lookScript.enabled = false;
-			DisplayText("PRESS 'ENTER'\nTO EXIST", 999f, 2f);
+			controlsText.enabled = false;
+			textDisplay.alignment = TextAnchor.MiddleCenter;
+			DisplayText("Welcome, Operator. Archive 247\nof attempt subject A-1006 loaded.\n\nDOTCYCLE ACTIVE.\n\nPRESS 'ENTER' TO EXIST.", 9999f, 2f);
 
 			if (Input.GetKey(KeyCode.Return)) {
 				resetTimes();
@@ -75,6 +123,7 @@ public class Narrator : MonoBehaviour {
 			break;
 
 			case 1:
+			textDisplay.alignment = TextAnchor.UpperLeft;
 			DisplayText("Chapter 1: Sentience", 2f, 2f, 2);
 			break;
 
@@ -99,11 +148,12 @@ public class Narrator : MonoBehaviour {
 			case 6:
 			moveScript.enabled = true;
 			lookScript.enabled = true;
-			DisplayText("became navigatable", 4f, 2f);
+			DisplayText("became navigatable", 4f, 4f, -4);
 			break;
 
 			case 7:
 			DisplayText("And the nature of being", 4f, 2f, 8);
+			controlsText.enabled = false;
 			break;
 
 			case 8:
@@ -304,7 +354,8 @@ public class Narrator : MonoBehaviour {
 
 			case 47:
 			rb.velocity = new Vector3(0, 0, 0);
-			DisplayText("Runtime: " + endNum + " seconds", 999f, 2f);
+			lookScript.enabled = false;
+			DisplayText("Runtime: " + endNum + " seconds", 9999f, 2f);
 			break;
 		}
 	}
@@ -336,4 +387,22 @@ public class Narrator : MonoBehaviour {
 		getTime = true;
 		nextText = false;
 	}
+
+	IEnumerator StopGame(bool end) {
+		if (end) menuText.text = "Relaying session data\nto other Operators...";
+		else menuText.text = "Halting emulation...";
+
+		yield return StartCoroutine(WaitForRealSeconds(3));
+		menuText.text = "Session end.";
+
+		yield return StartCoroutine(WaitForRealSeconds(1));
+		Application.Quit();
+	}
+
+    IEnumerator WaitForRealSeconds(float time) {
+        float start = Time.realtimeSinceStartup;
+        while (Time.realtimeSinceStartup < start + time) {
+            yield return null;
+        }
+    }
 }

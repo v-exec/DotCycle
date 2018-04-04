@@ -11,15 +11,12 @@ public class MouseLook : MonoBehaviour {
 	private float rotX = 0.0f;
 
 	void Start () {
-		Cursor.lockState = CursorLockMode.Locked;
-
 		Vector3 rot = transform.localRotation.eulerAngles;
 		rotY = rot.y;
 		rotX = rot.x;
 	}
 
 	void FixedUpdate () {
-		Cursor.lockState = CursorLockMode.Locked;
 		float mouseX = Input.GetAxis("Mouse X");
 		float mouseY = -Input.GetAxis("Mouse Y");
 
